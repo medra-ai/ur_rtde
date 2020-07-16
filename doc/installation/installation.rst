@@ -142,8 +142,8 @@ Linux (Ubuntu) and macOS
     and next clicking the **'START'** button. You can now run the examples.
 
 
-Windows
--------
+Windows Visual
+--------------
 .. code-block:: shell
 
     git clone https://gitlab.com/sdurobotics/ur_rtde.git
@@ -171,4 +171,24 @@ Set the following CMake Command Arguments in order for the project to find Boost
     machine you can set the network adapter to "Bridged" in the 'Virtual Machine Settings'. If you then obtain the IP
     address of the robot using ifconfig, you can test the communication with your windows host running the ur_rtde program.
 
+Windows Commandline
+-------------------
 
+A quick way to compile the interface on windows, is to do everything from command line.
+The following commands can be run from commandpromt after boost has been installed
+
+.. code-block:: shell
+
+    git clone https://gitlab.com/sdurobotics/ur_rtde.git
+    cd ur_rtde
+    mkdir Build
+    cd Build
+    cmake cmake -DBOOST_ROOT="<Path:\to\boost_<version>>" -DBOOST_LIBRARYDIR="<Path:\to\boost_<VERSION>\<COMPILER>>" -DPYTHON_BINDINGS=OFF
+    msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:<NUMBER_OF_CORES>
+
+filling out the system specific variables the setup looks like this for a computer with 8 cores, using visual studio 2019 and boost 1.71.0 
+
+.. code-block:: shell
+
+    cmake cmake -DBOOST_ROOT="C:\local\boost_1_71_0" -DBOOST_LIBRARYDIR="C:\local\boost_1_71_0\lib64-msvc-14.2" -DPYTHON_BINDINGS=OFF
+    msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:8

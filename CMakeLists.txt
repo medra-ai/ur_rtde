@@ -9,6 +9,7 @@ option(CODE "Build primary libraries" ON)
 option(EXAMPLES "Build example executables." ON)
 option(PYTHON_BINDINGS "Build python bindings for libraries" ON)
 option(USE_WERROR "Use more strict compile flags" OFF)
+option(WINDOWS_INSTALLER "Use this to generate a windows installer" ON)
 
 if(NOT DEFINED DOC)
 	set(DOC OFF CACHE STRING
@@ -251,14 +252,15 @@ if(${CODE})
 
 	install(TARGETS rtde
 			EXPORT RTDETargets
-			LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-			ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-			RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+			LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ur_rtde_lib
+			ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ur_rtde_lib
+			RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ur_rtde_lib
 			INCLUDES DESTINATION ${INCLUDE_INSTALL_DIR}
 			)
 	if(${PYTHON_BINDINGS})
 		install(TARGETS rtde_control rtde_receive rtde_io dashboard_client script_client
-				DESTINATION ${PYTHON_SITE_PACKAGES})
+				DESTINATION ${PYTHON_SITE_PACKAGES}
+				COMPONENT ur_rtde-python)
 	endif()
 
 	install(
@@ -266,7 +268,7 @@ if(${CODE})
 			${LIB_HEADER_FILES}
 			"${CMAKE_CURRENT_SOURCE_DIR}/include/ur_rtde/rtde_export.h"
 			DESTINATION ${INCLUDE_INSTALL_DIR}/ur_rtde
-			COMPONENT ur_rtde
+			COMPONENT ur_rtde_dev
 	)
 
 	include(CMakePackageConfigHelpers)
@@ -283,15 +285,176 @@ if(${CODE})
 		"${CMAKE_CURRENT_BINARY_DIR}/ur_rtde/ur_rtdeConfig.cmake"
 		COPYONLY
 	)
+	configure_file(cmake/ur_rtdeBuildConfig.cmake.in
+		"${CMAKE_CURRENT_BINARY_DIR}/cmake/ur_rtdeBuildConfig.cmake"
+	)
 	install(EXPORT RTDETargets
 		FILE ur_rtdeTargets.cmake
 		NAMESPACE ur_rtde::
 		DESTINATION ${LIB_INSTALL_DIR}/cmake/ur_rtde
+		COMPONENT ur_rtde_cmake
 	)
 	install(
 		FILES cmake/ur_rtdeConfig.cmake
 		"${CMAKE_CURRENT_BINARY_DIR}/ur_rtde/ur_rtdeConfigVersion.cmake"
 		DESTINATION ${LIB_INSTALL_DIR}/cmake/ur_rtde
-		COMPONENT ur_rtde
+		COMPONENT ur_rtde_cmake
 	)
 endif()
+
+if(WINDOWS_INSTALLER)
+	set(BOOST_LIBRARIES_INSTALL "")
+	foreach(s ${Boost_LIBRARIES})
+		if("${s}" STREQUAL "optimized")
+
+		elseif("${s}" STREQUAL "debug")
+
+		else()
+			get_filename_component(_dir "${s}" DIRECTORY)
+			get_filename_component(_file "${s}" NAME_WLE)
+			string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
+			file(GLOB _files "${_dir}/${_file}*lib")
+			foreach(file ${_files})
+				list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
+			endforeach()
+		endif()
+	endforeach()
+
+	# Install external libraries
+	install(
+		FILES ${BOOST_LIBRARIES_INSTALL}
+		DESTINATION ${LIB_INSTALL_DIR}
+		COMPONENT boost
+	)
+	install(
+		DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
+		DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boost/"
+		COMPONENT boost
+	)
+
+
+    if(DEFINED MSVC)
+        set(SLASH "\\\\")
+
+		############################### CPACK setup ######################################### 
+        set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+        set(CPACK_PACKAGE_VENDOR "University of Southern Denmark")
+        set(
+            CPACK_PACKAGE_DESCRIPTION_SUMMARY
+            "A C++ interface for sending and receiving data to/from a UR robot using the Real-Time Data Exchange (RTDE) interface of the robot"
+        )
+        set(CPACK_PACKAGE_HOMEPAGE_URL "https://sdurobotics.gitlab.io/ur_rtde/")
+        set(CPACK_PACKAGE_INSTALL_DIRECTORY "ur_rtde")
+        set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}${SLASH}LICENSE")
+		set(CPACK_PACKAGE_CONTACT "Anders Prier Lindvig (anpl@mmmi.sdu.dk)")
+		
+		set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+        set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+        set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+        set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
+        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+
+		############################### NSIS setup ######################################### 
+        set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_NAME}")
+        set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_NAME}")
+        set(CPACK_NSIS_HELP_LINK ${CPACK_PACKAGE_HOMEPAGE_URL})
+        set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_PACKAGE_HOMEPAGE_URL})
+        #set(
+        #    CPACK_NSIS_MUI_ICON
+        #    "${PROJECT_SOURCE_DIR}${SLASH}\doc\_static\robots.png" # needs to be 32x32.ico file
+        #)
+        #set(
+        #    CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP
+        #    "${PROJECT_SOURCE_DIR}${SLASH}\doc\_static\robots.png"  # needs to be 128x64.bmp file
+        #)
+        #set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP})
+        set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON) # When installing on a previus
+                                                           # instalation ask to uninstall first
+        set(CPACK_NSIS_UNINSTALL_NAME "ur_rtde_uninstall")
+        set(CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT})
+
+        # Make sure the system findes the project at installation
+        set(CPACK_NSIS_MODIFY_PATH ON) # Add the binary folder to PATH
+        set(
+            CPACK_NSIS_EXTRA_INSTALL_COMMANDS # let cmake find ur_rtde
+            "WriteRegStr HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}ur_rtde\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
+            "WriteRegStr HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}ur_rtde\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
+        )
+        set(
+            CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS # clean up when uninstalling ur_rtde
+            "DeleteRegKey HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}ur_rtde\\\""
+            "DeleteRegKey HKLM \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}ur_rtde\\\""
+        )
+        string(
+            REPLACE
+                ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}"
+        )
+        string(
+            REPLACE
+                ";" "\n" CPACK_NSIS_EXTRA_UNSTALL_COMMANDS "${CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS}"
+        )
+
+		############################### Package setup ######################################### 
+		get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS) # Get all components
+		message(STATUS "${CPACK_COMPONENTS_ALL}")
+		
+		include(CPack)
+        # Setup Install Groupes ####
+		cpack_add_component_group(UR_RTDE 
+			DISPLAY_NAME "ur_rtde"
+            DESCRIPTION "Tools for controlling robots"
+            EXPANDED
+            BOLD_TITLE
+        )
+		cpack_add_component_group(MISC 
+			DISPLAY_NAME "Miscellaneous" 
+			DESCRIPTION "Theses are Other Packages"
+		)
+		cpack_add_component_group(DEP
+			DISPLAY_NAME "Dependencies" 
+			DESCRIPTION "Theses are external dependencies for the ur_rtde"
+		)
+		cpack_add_component_group(DEVEL 
+			DISPLAY_NAME "Development Files" 
+			DESCRIPTION "Theses are packages needed when you want to use ur_rtde for development"
+        )
+
+        # Setup Install Types ####
+        cpack_add_install_type(Full DISPLAY_NAME "Full")
+
+		# Setup Install Components
+		cpack_add_component( ur_rtde_lib
+			DISPLAY_NAME "DevelFiles"
+			DESCRIPTION "This package includes the files nessesary to run a program depending on ur_rtde"
+			GROUP UR_RTDE
+			DEPENDS ur_rtde_lib
+			INSTALL_TYPES Full 
+			# DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+		)
+		cpack_add_component( ur_rtde_dev
+			DISPLAY_NAME "DevelFiles"
+			DESCRIPTION "This package includes the files nessesary for develop a program depending on ur_rtde"
+			GROUP UR_RTDE
+			DEPENDS ur_rtde_lib
+			INSTALL_TYPES Full 
+			# DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+		)
+        cpack_add_component( ur_rtde_cmake
+			DISPLAY_NAME "CMakeFiles"
+            DESCRIPTION "This package includes the files nessesary for cmake to find and configure ur_rtde"
+            GROUP UR_RTDE
+			DEPENDS ur_rtde_lib ur_rtde_dev
+            INSTALL_TYPES Full 
+			# DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+		)
+		cpack_add_component( boost
+			DISPLAY_NAME "Boost"
+			DESCRIPTION "This package includes the files ur_rtde needs for runtime and development"
+			GROUP DEP
+			INSTALL_TYPES Full 
+			# DOWNLOADED ARCHIVE_FILE #Name_of_file_to_generate_for_download
+		)
+	endif()
+endif()
+
