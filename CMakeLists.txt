@@ -9,7 +9,7 @@ option(CODE "Build primary libraries" ON)
 option(EXAMPLES "Build example executables." ON)
 option(PYTHON_BINDINGS "Build python bindings for libraries" ON)
 option(USE_WERROR "Use more strict compile flags" OFF)
-option(WINDOWS_INSTALLER "Use this to generate a windows installer" ON)
+option(WINDOWS_INSTALLER "Use this to generate a windows installer" OFF)
 
 if(NOT DEFINED DOC)
 	set(DOC OFF CACHE STRING
