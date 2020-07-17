@@ -10,6 +10,12 @@ option(EXAMPLES "Build example executables." ON)
 option(PYTHON_BINDINGS "Build python bindings for libraries" ON)
 option(USE_WERROR "Use more strict compile flags" OFF)
 option(WINDOWS_INSTALLER "Use this to generate a windows installer" OFF)
+option(BUILD_STATIC "Use this option to build the library STATIC" OFF)
+
+set(BUILD_TYPE SHARED)
+if(BUILD_STATIC)
+	set(BUILD_TYPE STATIC)
+endif()
 
 if(NOT DEFINED DOC)
 	set(DOC OFF CACHE STRING
@@ -102,12 +108,8 @@ if(${CODE})
 	string(REGEX REPLACE "\\\n" "\" + NEW_LINE  + \n\"" FILEVAR ${FILEVAR})
 	set(end "\";")
 	file(WRITE include/ur_rtde/rtde_control_script.h "${header}${FILEVAR}${end}")
-	
-	if(WINDOWS_INSTALLER)
-		add_library(rtde STATIC ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
-	else()
-		add_library(rtde SHARED ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
-	endif()
+
+	add_library(rtde ${BUILD_TYPE} ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
 	target_include_directories(rtde
 			PUBLIC ${Boost_INCLUDE_DIRS}
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
