@@ -203,7 +203,7 @@ The example above is the basic setup for compiling ur_rtde below you'll find a l
     - The default value is "OFF", which means that a dll library is build.
       This means, that when trying to link against this library runtime. 
       The .dll file must either be moved to the same directory as .exe file.
-      Or the system PATH variable must be set to include Build\<config>
+      Or the system PATH variable must be set to include Build\\<config>
     - If it is set to ON the libraries will be build statically.
       This will make the compile time linking libraries a little longer and the output .exe or .lib a little larger.
 
