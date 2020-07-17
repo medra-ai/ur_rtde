@@ -24,7 +24,7 @@ build-WINDOWS:
   script:
     - mkdir build
     - cd build
-    - cmake -DPYTHON_BINDINGS:BOOL=OFF -DUSE_WERROR:BOOL=ON ..
+    - cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDINGS:BOOL=OFF -DUSE_WERROR:BOOL=ON ..
     - msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:8 
   tags:
     - windows
