@@ -192,3 +192,6 @@ filling out the system specific variables the setup looks like this for a comput
 
     cmake cmake -DBOOST_ROOT="C:\local\boost_1_71_0" -DBOOST_LIBRARYDIR="C:\local\boost_1_71_0\lib64-msvc-14.2" -DPYTHON_BINDINGS=OFF
     msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:8
+
+for visual studio 2017 it might compline about not finding 32 bit versions of boost even on a 64 bit system.
+In case of that add the following arguments to cmake: -G "Visual Studio 15 2017 Win64"
