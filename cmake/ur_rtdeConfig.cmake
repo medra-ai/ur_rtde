@@ -22,8 +22,8 @@ if(IS_WINDOWS_INSTALLER)
   string(REGEX MATCH "${regex}" boost_LIB_DIR ${L_LIBS})
 
   #replace boost path
-  string(REPLACE "${boost_DIR}" "${URRTDE_CMAKE_DIR}/../../include/ext" I_DIR "${I_DIR}")
-  string(REPLACE "${boost_LIB_DIR}" "${URRTDE_CMAKE_DIR}/.." L_LIBS "${L_LIBS}")
+  string(REPLACE "${boost_DIR}" "${URRTDE_CMAKE_DIR}/../../../include/ext" I_DIR "${I_DIR}")
+  string(REPLACE "${boost_LIB_DIR}" "${URRTDE_CMAKE_DIR}/../.." L_LIBS "${L_LIBS}")
   set_target_properties(ur_rtde::rtde PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${I_DIR}"
       INTERFACE_LINK_LIBRARIES  "${L_LIBS}"

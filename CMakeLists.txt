@@ -45,7 +45,10 @@ set(PROJECT_MAIL "anpl@mmmi.sdu.dk")
 
 if(${CODE})
 	set(Boost_USE_MULTITHREAD ON)
-	find_package(Boost REQUIRED COMPONENTS system thread)
+	if(WINDOWS_INSTALLER)
+		set(Boost_USE_STATIC_LIBS ON)
+	endif()
+	find_package(Boost REQUIRED COMPONENTS system thread date_time)
 	find_package(Threads)
 
 	if(${PYTHON_BINDINGS})
@@ -99,16 +102,22 @@ if(${CODE})
 	string(REGEX REPLACE "\\\n" "\" + NEW_LINE  + \n\"" FILEVAR ${FILEVAR})
 	set(end "\";")
 	file(WRITE include/ur_rtde/rtde_control_script.h "${header}${FILEVAR}${end}")
-
-	add_library(rtde SHARED ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
+	
+	if(WINDOWS_INSTALLER)
+		add_library(rtde STATIC ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
+	else()
+		add_library(rtde SHARED ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
+	endif()
 	target_include_directories(rtde
 			PUBLIC ${Boost_INCLUDE_DIRS}
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 			$<INSTALL_INTERFACE:include>)
+	message(STATUS ${Boost_DATE_TIME_LIBRARY})
 	target_link_libraries(rtde PUBLIC
 			${Boost_SYSTEM_LIBRARY}
 			${Boost_THREAD_LIBRARY}
+			${Boost_DATE_TIME_LIBRARY}
 			${CMAKE_THREAD_LIBS_INIT})
 	set_target_properties(rtde PROPERTIES 
 			VERSION ${PROJECT_VERSION} 
@@ -286,7 +295,7 @@ if(${CODE})
 		COPYONLY
 	)
 	configure_file(cmake/ur_rtdeBuildConfig.cmake.in
-		"${CMAKE_CURRENT_BINARY_DIR}/cmake/ur_rtdeBuildConfig.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/ur_rtde/ur_rtdeBuildConfig.cmake"
 	)
 	install(EXPORT RTDETargets
 		FILE ur_rtdeTargets.cmake
@@ -297,6 +306,7 @@ if(${CODE})
 	install(
 		FILES cmake/ur_rtdeConfig.cmake
 		"${CMAKE_CURRENT_BINARY_DIR}/ur_rtde/ur_rtdeConfigVersion.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/ur_rtde/ur_rtdeBuildConfig.cmake"
 		DESTINATION ${LIB_INSTALL_DIR}/cmake/ur_rtde
 		COMPONENT ur_rtde_cmake
 	)
@@ -327,11 +337,23 @@ if(WINDOWS_INSTALLER)
 		COMPONENT boost
 	)
 	install(
-		DIRECTORY "${Boost_INCLUDE_DIR}/boost/"
+		DIRECTORY "${Boost_INCLUDE_DIR}/boost/asio" "${Boost_INCLUDE_DIR}/boost/config"
+		"${Boost_INCLUDE_DIR}/boost/core" "${Boost_INCLUDE_DIR}/boost/date_time" "${Boost_INCLUDE_DIR}/boost/detail"
+		"${Boost_INCLUDE_DIR}/boost/exception" "${Boost_INCLUDE_DIR}/boost/mpl" "${Boost_INCLUDE_DIR}/boost/numeric"
+		"${Boost_INCLUDE_DIR}/boost/predef" "${Boost_INCLUDE_DIR}/boost/preprocessor" "${Boost_INCLUDE_DIR}/boost/smart_ptr"
+		"${Boost_INCLUDE_DIR}/boost/system" "${Boost_INCLUDE_DIR}/boost/type_traits" "${Boost_INCLUDE_DIR}/boost/winapi"
 		DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boost/"
 		COMPONENT boost
 	)
-
+	install(
+		FILES "${Boost_INCLUDE_DIR}/boost/assert.hpp" "${Boost_INCLUDE_DIR}/boost/cerrno.hpp" "${Boost_INCLUDE_DIR}/boost/checked_delete.hpp"
+		"${Boost_INCLUDE_DIR}/boost/config.hpp" "${Boost_INCLUDE_DIR}/boost/cstdint.hpp" "${Boost_INCLUDE_DIR}/boost/current_function.hpp"
+		"${Boost_INCLUDE_DIR}/boost/limits.hpp" "${Boost_INCLUDE_DIR}/boost/operators.hpp" "${Boost_INCLUDE_DIR}/boost/shared_ptr.hpp"
+		"${Boost_INCLUDE_DIR}/boost/static_assert.hpp" "${Boost_INCLUDE_DIR}/boost/throw_exception.hpp" "${Boost_INCLUDE_DIR}/boost/type.hpp"
+		"${Boost_INCLUDE_DIR}/boost/version.hpp"
+		DESTINATION "${INCLUDE_INSTALL_DIR}/ext/boost/"
+		COMPONENT boost
+	)
 
     if(DEFINED MSVC)
         set(SLASH "\\\\")
