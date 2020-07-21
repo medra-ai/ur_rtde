@@ -319,11 +319,24 @@ if(WINDOWS_INSTALLER)
 	message(STATUS "Boost ALL: ${Boost_LIBRARIES}")
 	message(STATUS "Boost LIBDIR: ${Boost_LIBRARY_DIR_RELEASE}")
 	message(STATUS "Boost SYSTEM: ${Boost_LIBRARY_DIR_DEBUG}")
+	if(TARGET Boost::system)
+	get_target_property(L_LIBS Boost::system IMPORTED_LOCATION_RELEASE)
+	message(STATUS "Boost system ILLib ${L_LIBS}")
+	endif()
+
+
+
 	foreach(s ${Boost_LIBRARIES})
 		if("${s}" STREQUAL "optimized")
 
 		elseif("${s}" STREQUAL "debug")
 
+		elseif(TARGET ${s})
+			get_target_property(L_LIBS Boost::system INTERFACE_LINK_LIBRARIES)
+			get_target_property(LIB Boost::system IMPORTED_LOCATION_RELEASE)
+			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}" "$L_LIBS")
+			message(STATUS "BOOST: ${LIB}")
+			message(STATUS "BOOST: ${L_LIBS}")
 		else()
 			get_filename_component(_dir "${s}" DIRECTORY)
 			get_filename_component(_file "${s}" NAME_WLE)
