@@ -181,7 +181,6 @@ class RTDEUtility
     ((char *)(&output))[1] = data[message_offset + 2];
     ((char *)(&output))[0] = data[message_offset + 3];
     message_offset += 4;
-
     return output;
   }
 
