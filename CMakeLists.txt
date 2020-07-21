@@ -317,8 +317,8 @@ if(WINDOWS_INSTALLER)
 	set(BOOST_LIBRARIES_INSTALL "")
 
 	message(STATUS "Boost ALL: ${Boost_LIBRARIES}")
-	message(STATUS "Boost SYSTEM: ${Boost_system_LIBRARY_RELEASE}")
-	message(STATUS "Boost SYSTEM: ${Boost_System_LIBRARY_RELEASE}")
+	message(STATUS "Boost LIBDIR: ${Boost_LIBRARY_DIR_RELEASE}")
+	message(STATUS "Boost SYSTEM: ${Boost_LIBRARY_DIR_DEBUG}")
 	foreach(s ${Boost_LIBRARIES})
 		if("${s}" STREQUAL "optimized")
 
