@@ -28,7 +28,9 @@ build-WINDOWS:
     - msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:8 
     - msbuild PACKAGE.vcxproj /property:Configuration=Release /maxcpucount:8 
   artifacts:
-    - build/ur_rtde-install.exe
+    paths:
+      - mycv.pdf
+    expire_in: 2 days
   tags:
     - windows
 
@@ -69,6 +71,7 @@ sphinx_html:
   artifacts:
     paths:
       - build/doc/html
+    expire_in: 2 days
   tags:
     - linux
 
