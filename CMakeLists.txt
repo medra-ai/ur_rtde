@@ -320,14 +320,20 @@ macro(getBoostLibraryList output list)
 
 	elseif("${s}" STREQUAL "debug")
 
+	elseif("${s}" MATCHES "NOTFOUND")
+
 	elseif(TARGET ${s})
 		get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
-		list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
-		message(STATUS "BOOST: ${LIB}")
+		if(LIB)
+			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
+			message(STATUS "BOOST: ${LIB}")
+		endif()
 		
+
 		get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
 		getBoostLibraryList(${output} "${L_LIBS}")
 	else()
+		message(STATUS "something: ${s}")
 		get_filename_component(_dir "${s}" DIRECTORY)
 		get_filename_component(_file "${s}" NAME_WLE)
 		string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
