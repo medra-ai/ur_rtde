@@ -425,21 +425,21 @@ if(WINDOWS_INSTALLER)
         # Setup Install Groupes ####
 		cpack_add_component_group(UR_RTDE 
 			DISPLAY_NAME "ur_rtde"
-            DESCRIPTION "Tools for controlling robots"
+            DESCRIPTION "Libraries for controlling UR robots"
             EXPANDED
             BOLD_TITLE
         )
 		cpack_add_component_group(MISC 
 			DISPLAY_NAME "Miscellaneous" 
-			DESCRIPTION "Theses are Other Packages"
+			DESCRIPTION "These are miscellaneous packages"
 		)
 		cpack_add_component_group(DEP
 			DISPLAY_NAME "Dependencies" 
-			DESCRIPTION "Theses are external dependencies for the ur_rtde"
+			DESCRIPTION "These are external dependencies for the ur_rtde"
 		)
 		cpack_add_component_group(DEVEL 
 			DISPLAY_NAME "Development Files" 
-			DESCRIPTION "Theses are packages needed when you want to use ur_rtde for development"
+			DESCRIPTION "These are packages needed when you want to use ur_rtde for development"
         )
 
         # Setup Install Types ####
@@ -448,7 +448,7 @@ if(WINDOWS_INSTALLER)
 		# Setup Install Components
 		cpack_add_component( ur_rtde_lib
 			DISPLAY_NAME "DevelFiles"
-			DESCRIPTION "This package includes the files nessesary to run a program depending on ur_rtde"
+			DESCRIPTION "This package includes the files necessary to run a program that depends on ur_rtde"
 			GROUP UR_RTDE
 			DEPENDS ur_rtde_lib
 			INSTALL_TYPES Full 
@@ -456,7 +456,7 @@ if(WINDOWS_INSTALLER)
 		)
 		cpack_add_component( ur_rtde_dev
 			DISPLAY_NAME "DevelFiles"
-			DESCRIPTION "This package includes the files nessesary for develop a program depending on ur_rtde"
+			DESCRIPTION "This package includes the files necessary for development of a program that depends on ur_rtde"
 			GROUP UR_RTDE
 			DEPENDS ur_rtde_lib
 			INSTALL_TYPES Full 
@@ -464,7 +464,7 @@ if(WINDOWS_INSTALLER)
 		)
         cpack_add_component( ur_rtde_cmake
 			DISPLAY_NAME "CMakeFiles"
-            DESCRIPTION "This package includes the files nessesary for cmake to find and configure ur_rtde"
+            DESCRIPTION "This package includes the files necessary for CMake to find and configure ur_rtde"
             GROUP UR_RTDE
 			DEPENDS ur_rtde_lib ur_rtde_dev
             INSTALL_TYPES Full 
