@@ -115,7 +115,6 @@ if(${CODE})
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 			$<INSTALL_INTERFACE:include>)
-	message(STATUS ${Boost_DATE_TIME_LIBRARY})
 	target_link_libraries(rtde PUBLIC
 			${Boost_SYSTEM_LIBRARY}
 			${Boost_THREAD_LIBRARY}
@@ -377,7 +376,7 @@ if(WINDOWS_INSTALLER)
         set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
         set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 
-        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION})
+        set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-install)
 
 		############################### NSIS setup ######################################### 
         set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_NAME}")
@@ -421,7 +420,6 @@ if(WINDOWS_INSTALLER)
 
 		############################### Package setup ######################################### 
 		get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS) # Get all components
-		message(STATUS "${CPACK_COMPONENTS_ALL}")
 		
 		include(CPack)
         # Setup Install Groupes ####

@@ -12,6 +12,11 @@ If you are on Linux (Ubuntu), you can install ur_rtde with:
     sudo apt install librtde
 
 
+If you are on Windows, you can install ur_rtde from this installer:
+
+:download:`Download ur_rtde.exe <../_static/ur_rtde-installer.exe>`
+
+
 If you only want to the use the Python interface, you can install ur_rtde through pip:
 
 .. code-block:: shell
