@@ -61,7 +61,7 @@ sphinx_html:
   stage: doc
   image: registry.gitlab.com/sdurobotics/docker-images/ur_rtde-build:ubuntu-1804-doc
   script:
-    - mkdir build
+    - "[ -d Build ] || mkdir Build"
     - cd build
     - ls
     - mv ./ur_rtde-install.exe ../doc/_static/ur_rtde-install.exe
