@@ -313,6 +313,34 @@ if(${CODE})
 	)
 endif()
 
+macro(getBoostLibraryList output list)
+	foreach(s ${list})
+	message(STATUS "test: ${s}")
+	if("${s}" STREQUAL "optimized")
+
+	elseif("${s}" STREQUAL "debug")
+
+	elseif(TARGET ${s})
+		get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
+		list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
+		message(STATUS "BOOST: ${LIB}")
+		
+		get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
+		getBoostLibraryList(${output} "${L_LIBS}")
+	else()
+		get_filename_component(_dir "${s}" DIRECTORY)
+		get_filename_component(_file "${s}" NAME_WLE)
+		string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
+		file(GLOB _files "${_dir}/${_file}*lib")
+		foreach(file ${_files})
+			list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
+			message(STATUS "Boost: ${file}")
+		endforeach()
+	endif()
+	endforeach()
+endmacro()
+
+
 if(WINDOWS_INSTALLER)
 	set(BOOST_LIBRARIES_INSTALL "")
 
@@ -325,30 +353,8 @@ if(WINDOWS_INSTALLER)
 	endif()
 
 
+	getBoostLibraryList(BOOST_LIBRARIES_INSTALL "${Boost_LIBRARIES}")
 
-	foreach(s ${Boost_LIBRARIES})
-		message(STATUS "test: ${s}")
-		if("${s}" STREQUAL "optimized")
-
-		elseif("${s}" STREQUAL "debug")
-
-		elseif(TARGET ${s})
-			get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
-			list(APPEND Boost_LIBRARIES ${L_LIBS})
-			get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
-			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
-			message(STATUS "BOOST: ${LIB}")
-		else()
-			get_filename_component(_dir "${s}" DIRECTORY)
-			get_filename_component(_file "${s}" NAME_WLE)
-			string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
-			file(GLOB _files "${_dir}/${_file}*lib")
-			foreach(file ${_files})
-				list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
-				message(STATUS "Boost: ${file}")
-			endforeach()
-		endif()
-	endforeach()
 
 	# Install external libraries
 	install(
