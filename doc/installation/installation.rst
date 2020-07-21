@@ -142,13 +142,13 @@ Linux (Ubuntu) and macOS
     and next clicking the **'START'** button. You can now run the examples.
 
 
-Windows Visual
---------------
+Windows Visual Studio
+---------------------
 .. code-block:: shell
 
     git clone https://gitlab.com/sdurobotics/ur_rtde.git
 
-If you are using Microsoft Visual Studio version with CMake support (supported since 2017 version).
+If you are using Microsoft Visual Studio with CMake support (supported since 2017 version).
 You should be able to navigate to the folder you cloned the repository to and open the ur_rtde
 as a CMake project. See the image below.
 
@@ -171,11 +171,11 @@ Set the following CMake Command Arguments in order for the project to find Boost
     machine you can set the network adapter to "Bridged" in the 'Virtual Machine Settings'. If you then obtain the IP
     address of the robot using ifconfig, you can test the communication with your windows host running the ur_rtde program.
 
-Windows Commandline compile
+Windows Commandline
 -------------------
 
-A quick way to compile the interface on windows, is to do everything from command line.
-The following commands can be run from commandpromt after boost has been installed
+A quick way to compile the interface on Windows, is to do everything from the command line.
+The following commands can be executed from the command prompt after Boost has been installed.
 
 .. code-block:: shell
 
@@ -200,7 +200,7 @@ The example above is the basic setup for compiling ur_rtde below you'll find a l
     - The equivalent for Visual studio 2019 is: -G "Visual Studio 16 2019" -A x64
 
 - -DBUILD_STATIC=[ON|OFF]
-    - The default value is "OFF", which means that a dll library is build.
+    - The default value is "OFF", which means that a dll library is built.
       This means, that when trying to link against this library runtime. 
       The .dll file must either be moved to the same directory as .exe file.
       Or the system PATH variable must be set to include Build\\<config>
