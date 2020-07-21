@@ -327,16 +327,17 @@ if(WINDOWS_INSTALLER)
 
 
 	foreach(s ${Boost_LIBRARIES})
+		message(STATUS "test: ${s}")
 		if("${s}" STREQUAL "optimized")
 
 		elseif("${s}" STREQUAL "debug")
 
 		elseif(TARGET ${s})
-			get_target_property(L_LIBS Boost::system INTERFACE_LINK_LIBRARIES)
-			get_target_property(LIB Boost::system IMPORTED_LOCATION_RELEASE)
-			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}" "$L_LIBS")
+			get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
+			list(APPEND Boost_LIBRARIES ${L_LIBS})
+			get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
+			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
 			message(STATUS "BOOST: ${LIB}")
-			message(STATUS "BOOST: ${L_LIBS}")
 		else()
 			get_filename_component(_dir "${s}" DIRECTORY)
 			get_filename_component(_file "${s}" NAME_WLE)
