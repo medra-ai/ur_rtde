@@ -26,6 +26,9 @@ build-WINDOWS:
     - cd build
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" -DWINDOWS_INSTALLER=ON -DPYTHON_BINDINGS:BOOL=OFF -DUSE_WERROR:BOOL=OFF ..
     - msbuild ur_rtde.sln /property:Configuration=Release /maxcpucount:8 
+    - msbuild PACKAGE.vcxproj /property:Configuration=Release /maxcpucount:8 
+  artifacts:
+    - build/ur_rtde-install.exe
   tags:
     - windows
 
@@ -58,8 +61,11 @@ sphinx_html:
   script:
     - mkdir build
     - cd build
+    - mv ./ur_rtde-install.exe ../doc/_static/ur_rtde-install.exe
     - cmake -DCODE:BOOL=OFF -DDOC:STRING=html -DWERROR:BOOL=ON ..
     - make doc
+  dependencies:
+    - build-WINDOWS
   artifacts:
     paths:
       - build/doc/html

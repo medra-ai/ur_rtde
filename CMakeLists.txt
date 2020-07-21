@@ -385,20 +385,26 @@ if(WINDOWS_INSTALLER)
         set(CPACK_NSIS_URL_INFO_ABOUT ${CPACK_PACKAGE_HOMEPAGE_URL})
         #set(
         #    CPACK_NSIS_MUI_ICON
-        #    "${PROJECT_SOURCE_DIR}${SLASH}\doc\_static\robots.png" # needs to be 32x32.ico file
+        #    "${PROJECT_SOURCE_DIR}${SLASH}doc${SLASH}_static${SLASH}robots.png" # needs to be 32x32.ico file
         #)
         #set(
         #    CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP
-        #    "${PROJECT_SOURCE_DIR}${SLASH}\doc\_static\robots.png"  # needs to be 128x64.bmp file
+        #    "${PROJECT_SOURCE_DIR}${SLASH}doc${SLASH}_static${SLASH}robots.png"  # needs to be 128x64.bmp file
         #)
-        #set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP})
+		#set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP})
+		
         set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON) # When installing on a previus
                                                            # instalation ask to uninstall first
         set(CPACK_NSIS_UNINSTALL_NAME "ur_rtde_uninstall")
         set(CPACK_NSIS_CONTACT ${CPACK_PACKAGE_CONTACT})
 
-        # Make sure the system findes the project at installation
-        set(CPACK_NSIS_MODIFY_PATH ON) # Add the binary folder to PATH
+		# Make sure the system findes the project at installation
+		if(BUILD_STATIC)
+			set(CPACK_NSIS_MODIFY_PATH OFF) # Add the binary folder to PATH
+		else() 
+			set(CPACK_NSIS_MODIFY_PATH ON) # Add the binary folder to PATH
+		endif()
+
         set(
             CPACK_NSIS_EXTRA_INSTALL_COMMANDS # let cmake find ur_rtde
             "WriteRegStr HKCU \\\"Software${SLASH}Kitware${SLASH}CMake${SLASH}Packages${SLASH}ur_rtde\\\" \\\"Location\\\" \\\"$INSTDIR\\\""
