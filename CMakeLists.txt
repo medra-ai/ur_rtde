@@ -323,11 +323,15 @@ macro(getBoostLibraryList output list)
 	elseif("${s}" MATCHES "NOTFOUND")
 
 	elseif("${s}" STREQUAL "Boost::headers")
-	
+
+	elseif("${s}" STREQUAL "Threads::Threads")
+
+	elseif("${s}" IN_LIST ${output})
+
 	elseif(TARGET ${s})
 		get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
 		if(LIB)
-			list(APPEND BOOST_LIBRARIES_INSTALL "${LIB}")
+			list(APPEND ${output} "${LIB}")
 			message(STATUS "BOOST: ${LIB}")
 		endif()
 		
