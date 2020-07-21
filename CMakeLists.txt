@@ -315,40 +315,36 @@ endif()
 
 macro(getBoostLibraryList output list)
 	foreach(s ${list})
-	message(STATUS "test: ${s}")
-	if("${s}" STREQUAL "optimized")
+		if("${s}" STREQUAL "optimized")
 
-	elseif("${s}" STREQUAL "debug")
+		elseif("${s}" STREQUAL "debug")
 
-	elseif("${s}" MATCHES "NOTFOUND")
+		elseif("${s}" MATCHES "NOTFOUND")
 
-	elseif("${s}" STREQUAL "Boost::headers")
+		elseif("${s}" STREQUAL "Boost::headers")
 
-	elseif("${s}" STREQUAL "Threads::Threads")
+		elseif("${s}" STREQUAL "Threads::Threads")
 
-	elseif("${s}" IN_LIST ${output})
+		elseif("${s}" IN_LIST ${output})
 
-	elseif(TARGET ${s})
-		get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
-		if(LIB)
-			list(APPEND ${output} "${LIB}")
-			message(STATUS "BOOST: ${LIB}")
+		elseif(TARGET ${s})
+			get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
+			if(LIB)
+				list(APPEND ${output} "${LIB}")
+			endif()
+			
+
+			get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
+			getBoostLibraryList(${output} "${L_LIBS}")
+		else()
+			get_filename_component(_dir "${s}" DIRECTORY)
+			get_filename_component(_file "${s}" NAME_WLE)
+			string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
+			file(GLOB _files "${_dir}/${_file}*lib")
+			foreach(file ${_files})
+				list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
+			endforeach()
 		endif()
-		
-
-		get_target_property(L_LIBS ${s} INTERFACE_LINK_LIBRARIES)
-		getBoostLibraryList(${output} "${L_LIBS}")
-	else()
-		message(STATUS "something: ${s}")
-		get_filename_component(_dir "${s}" DIRECTORY)
-		get_filename_component(_file "${s}" NAME_WLE)
-		string(REGEX MATCH "[a-z]*_[a-z]*" _file ${_file})
-		file(GLOB _files "${_dir}/${_file}*lib")
-		foreach(file ${_files})
-			list(APPEND BOOST_LIBRARIES_INSTALL "${file}")
-			message(STATUS "Boost: ${file}")
-		endforeach()
-	endif()
 	endforeach()
 endmacro()
 
@@ -356,17 +352,7 @@ endmacro()
 if(WINDOWS_INSTALLER)
 	set(BOOST_LIBRARIES_INSTALL "")
 
-	message(STATUS "Boost ALL: ${Boost_LIBRARIES}")
-	message(STATUS "Boost LIBDIR: ${Boost_LIBRARY_DIR_RELEASE}")
-	message(STATUS "Boost SYSTEM: ${Boost_LIBRARY_DIR_DEBUG}")
-	if(TARGET Boost::system)
-	get_target_property(L_LIBS Boost::system IMPORTED_LOCATION_RELEASE)
-	message(STATUS "Boost system ILLib ${L_LIBS}")
-	endif()
-
-
 	getBoostLibraryList(BOOST_LIBRARIES_INSTALL "${Boost_LIBRARIES}")
-
 
 	# Install external libraries
 	install(
