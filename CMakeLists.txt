@@ -322,6 +322,8 @@ macro(getBoostLibraryList output list)
 
 	elseif("${s}" MATCHES "NOTFOUND")
 
+	elseif("${s}" STREQUAL "Boost::headers")
+	
 	elseif(TARGET ${s})
 		get_target_property(LIB ${s} IMPORTED_LOCATION_RELEASE)
 		if(LIB)
