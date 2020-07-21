@@ -10,6 +10,7 @@ endif()
 
 include("${URRTDE_CMAKE_DIR}/ur_rtdeBuildConfig.cmake")
 if(IS_WINDOWS_INSTALLER)
+  cmake_minimum_required(VERSION 3.5)
   #find static filepath properties
   get_target_property(I_DIR ur_rtde::rtde INTERFACE_INCLUDE_DIRECTORIES)
   get_target_property(L_LIBS ur_rtde::rtde INTERFACE_LINK_LIBRARIES)
