@@ -29,7 +29,7 @@ build-WINDOWS:
     - msbuild PACKAGE.vcxproj /property:Configuration=Release /maxcpucount:8 
   artifacts:
     paths:
-      - mycv.pdf
+      - build/ur_rtde-install.exe
     expire_in: 2 days
   tags:
     - windows
@@ -63,6 +63,7 @@ sphinx_html:
   script:
     - mkdir build
     - cd build
+    - ls
     - mv ./ur_rtde-install.exe ../doc/_static/ur_rtde-install.exe
     - cmake -DCODE:BOOL=OFF -DDOC:STRING=html -DWERROR:BOOL=ON ..
     - make doc
