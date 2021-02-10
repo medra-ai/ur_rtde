@@ -249,27 +249,15 @@ def rtde_control():
     elif feature == 1: # tool feature
       target_pose = p[0, 0, 0, 0, 0, 0]
     end
-    deceleration_counter = 0
 
-    while (jog_state > 0 and deceleration_counter < 50):
+    while (True):
       enter_critical
       if jog_state == 1: # 1 = new setpoint
         speeds = jog_speed_vector_dt
         jog_state = 2 # 2 = jogging
-        deceleration_counter = 0
         textmsg("new jog setpoint")
       end
       exit_critical
-
-      if jog_state == 3: # 3 - stopping (decelerating)
-        # We do a simple deceleration by just decreasing the speed by a
-        # certain factor. That is not a perfect deceleration ramp but it is
-        # ok to prevent jerks when stopping the jog thread
-        speeds = scale_pose(speeds, 0.7)
-        deceleration_counter = deceleration_counter + 1
-      else:
-        deceleration_counter = 0
-      end
 
       if feature == 0: # base feature
         target_transl = get_pose_translation(pose_add(target_pose, speeds))
@@ -284,11 +272,6 @@ def rtde_control():
       end
       servoj(q, jog_dt, lookahead_time=0.03, gain=1000)
     end
-    textmsg("jog_thread finished")
-    enter_critical
-    jogging_state = 0 # inactive
-    jog_thrd = 0
-    exit_critical
   end
 
 
@@ -730,8 +713,14 @@ $V36        pose_to_output_float_registers(0, tcp_offset)
               textmsg("start_jog done")    
         elif cmd == 42:
               textmsg("stop_jog")
-              jog_state = 3 # 3 = stopping (decelerating)
-              join jog_thrd
+              enter_critical
+              if jog_thrd != 0:
+                  textmsg("stopping jogging - killing jog_thrd")
+                  kill jog_thrd
+                  jog_thrd = 0
+              end
+              exit_critical
+              stopl(1.2)
               textmsg("stop_jog done")
         elif cmd == 43:
               textmsg("get_forward_kinematics_default")
@@ -792,7 +781,7 @@ $V36        pose_to_output_float_registers(0, tcp_offset)
     # RTDE Control script - Main loop
     #
 
-    textmsg("RTDE Control Script Loaded (15.01.2021-11:13)")
+    textmsg("RTDE Control Script Loaded (09.02.2021-11:07)")
 
     # Initialize gain and damping for force mode to a more stable default
 $V50force_mode_set_gain_scaling(0.5)
