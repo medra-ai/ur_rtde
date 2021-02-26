@@ -86,11 +86,11 @@ int main(int argc, char* argv[])
   printStatus(status);
 
   // Test async move - start move and then wait for completion
-  gripper.close(0.02, 0, RobotiqGripper::START_MOVE);
+  gripper.close(0.02f, 0.f, RobotiqGripper::START_MOVE);
   status = gripper.waitForMotionComplete();
   printStatus(status);
 
-  status = gripper.open(1.0, 0.0, RobotiqGripper::WAIT_FINISHED);
+  status = gripper.open(1.0f, 0.0f, RobotiqGripper::WAIT_FINISHED);
   printStatus(status);
 
   gripper.setUnit(RobotiqGripper::POSITION, RobotiqGripper::UNIT_DEVICE);
