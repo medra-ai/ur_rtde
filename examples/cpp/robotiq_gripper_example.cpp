@@ -33,7 +33,11 @@ void printStatus(int Status)
 int main(int argc, char* argv[])
 {
   std::cout << "Gripper test" << std::endl;
-  ur_rtde::RobotiqGripper gripper("127.0.0.1", 63352, true);
+  std::string hostname {"127.0.0.1"};
+  if (argc == 2) {
+    hostname = argv[1];
+  }
+  ur_rtde::RobotiqGripper gripper(hostname, 63352, true);
   gripper.connect();
 
   // Test emergency release functionality
@@ -107,4 +111,6 @@ int main(int argc, char* argv[])
 
   std::cout << "disconnecting" << std::endl;
   gripper.disconnect();
+
+  return EXIT_SUCCESS;
 }

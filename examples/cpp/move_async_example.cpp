@@ -3,14 +3,20 @@
 
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 using namespace ur_rtde;
 using namespace std::chrono;
 
 int main(int argc, char* argv[])
 {
-  RTDEControlInterface rtde_control("127.0.0.1");
-  RTDEReceiveInterface rtde_receive("127.0.0.1");
+  std::string hostname {"127.0.0.1"};
+  if (argc == 2) {
+    hostname = argv[1];
+  }
+
+  RTDEControlInterface rtde_control(hostname);
+  RTDEReceiveInterface rtde_receive(hostname);
   std::vector<double> init_q = rtde_receive.getActualQ();
 
   // Target in the robot base
@@ -46,5 +52,5 @@ int main(int argc, char* argv[])
 
   // Stop the RTDE control script
   rtde_control.stopScript();
-  return 0;
+  return EXIT_SUCCESS;
 }

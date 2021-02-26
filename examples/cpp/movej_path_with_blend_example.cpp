@@ -4,7 +4,11 @@ using namespace ur_rtde;
 
 int main(int argc, char* argv[])
 {
-  RTDEControlInterface rtde_control("127.0.0.1");
+  std::string hostname {"127.0.0.1"};
+  if (argc == 2) {
+    hostname = argv[1];
+  }
+  RTDEControlInterface rtde_control(hostname);
 
   double velocity = 0.5;
   double acceleration = 0.5;
@@ -24,5 +28,5 @@ int main(int argc, char* argv[])
   rtde_control.moveL(path);
   rtde_control.stopScript();
 
-  return 0;
+  return EXIT_SUCCESS;
 }

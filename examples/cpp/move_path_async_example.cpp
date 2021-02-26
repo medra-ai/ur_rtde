@@ -10,7 +10,11 @@ using namespace std::chrono;
 
 int main(int argc, char* argv[])
 {
-  std::string hostname = "127.0.0.1";
+  std::string hostname {"127.0.0.1"};
+  if (argc == 2) {
+    hostname = argv[1];
+  }
+
   RTDEControlInterface rtde_control(hostname);
   RTDEReceiveInterface rtde_receive(hostname);
 
@@ -63,5 +67,5 @@ int main(int argc, char* argv[])
   std::cout << "Async path finished...\n\n" << std::endl;
 
   rtde_control.stopScript();
-  return 0;
+  return EXIT_SUCCESS;
 }
