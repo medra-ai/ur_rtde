@@ -701,6 +701,38 @@ void RTDEControlInterface::receiveCallback()
   }
 }
 
+std::string RTDEControlInterface::outDoubleReg(int reg) const
+{
+  return "output_double_register_" + std::to_string(register_offset_+reg);
+}
+
+std::string RTDEControlInterface::outIntReg(int reg) const
+{
+  return "output_int_register_" + std::to_string(register_offset_+reg);
+}
+
+std::string RTDEControlInterface::inDoubleReg(int reg) const
+{
+  return "input_double_register_" + std::to_string(register_offset_+reg);
+}
+
+std::string RTDEControlInterface::inIntReg(int reg) const
+{
+  return "input_int_register_" + std::to_string(register_offset_+reg);
+}
+
+double RTDEControlInterface::getOutputDoubleReg(int reg)
+{
+  std::string func_name = "getOutput_double_register_"+std::to_string(register_offset_+reg);
+  return output_reg_func_map_[func_name]();
+}
+
+int RTDEControlInterface::getOutputIntReg(int reg)
+{
+  std::string func_name = "getOutput_int_register_"+std::to_string(register_offset_+reg);
+  return static_cast<int>(output_reg_func_map_[func_name]());
+}
+
 void RTDEControlInterface::stopScript()
 {
   RTDE::RobotCommand robot_cmd;

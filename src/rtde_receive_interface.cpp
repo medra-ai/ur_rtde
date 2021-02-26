@@ -294,6 +294,28 @@ void RTDEReceiveInterface::initOutputRegFuncMap()
       std::bind(&RobotState::getOutput_double_register_47, robot_state_);
 }
 
+std::string RTDEReceiveInterface::outDoubleReg(int reg) const
+{
+  return "output_double_register_" + std::to_string(register_offset_ + reg);
+}
+
+std::string RTDEReceiveInterface::outIntReg(int reg) const
+{
+  return "output_int_register_" + std::to_string(register_offset_ + reg);
+}
+
+double RTDEReceiveInterface::getOutputDoubleReg(int reg)
+{
+  std::string func_name = "getOutput_double_register_" + std::to_string(reg);
+  return output_reg_func_map_[func_name]();
+}
+
+int RTDEReceiveInterface::getOutputIntReg(int reg)
+{
+  std::string func_name = "getOutput_int_register_" + std::to_string(reg);
+  return static_cast<int>(output_reg_func_map_[func_name]());
+}
+
 void RTDEReceiveInterface::receiveCallback()
 {
   while (!stop_thread)

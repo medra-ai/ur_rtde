@@ -368,11 +368,11 @@ class RTDEReceiveInterface
    * Reads progress information for asynchronous operations that supports
    * progress feedback (such as movePath).
    * @retval <0 Indicates that no async operation is running or
-   * that an async operation has finished. The returned values of two 
-   * consecutive async operations is never equal. Normally the 
+   * that an async operation has finished. The returned values of two
+   * consecutive async operations is never equal. Normally the
    * returned values are toggled between -1 and -2. This allows the application
    * to clearly detect the end of an operation even if it is too short to see its
-   * start. That means, if the value returned by this function is less than 0 
+   * start. That means, if the value returned by this function is less than 0
    * and is different from that last value returned by this function, then a
    * new async operation has finished.
    * @retval 0 Indicates that an async operation has started - progress 0
@@ -391,27 +391,13 @@ class RTDEReceiveInterface
 
   void initOutputRegFuncMap();
 
-  std::string outDoubleReg(int reg) const
-  {
-    return "output_double_register_" + std::to_string(register_offset_ + reg);
-  };
+  std::string outDoubleReg(int reg) const;;
 
-  std::string outIntReg(int reg) const
-  {
-    return "output_int_register_" + std::to_string(register_offset_ + reg);
-  };
+  std::string outIntReg(int reg) const;;
 
-  double getOutputDoubleReg(int reg)
-  {
-    std::string func_name = "getOutput_double_register_" + std::to_string(reg);
-    return output_reg_func_map_[func_name]();
-  };
+  double getOutputDoubleReg(int reg);;
 
-  int getOutputIntReg(int reg)
-  {
-    std::string func_name = "getOutput_int_register_" + std::to_string(reg);
-    return output_reg_func_map_[func_name]();
-  };
+  int getOutputIntReg(int reg);;
 
   template <typename T>
   bool isWithinBounds(const T& value, const T& low, const T& high)
