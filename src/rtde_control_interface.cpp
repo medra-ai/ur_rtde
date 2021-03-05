@@ -1801,6 +1801,12 @@ bool RTDEControlInterface::sendCommand(const RTDE::RobotCommand &cmd)
           start_time = std::chrono::high_resolution_clock::now();
           while (getControlScriptState() != UR_CONTROLLER_DONE_WITH_CMD)
           {
+        	if (!db_client_->running())
+        	{
+        		std::cerr << "RTDEControlInterface: RTDE control script is not running!" << std::endl;
+        		return false;
+        	}
+
             // If robot is in an emergency or protective stop return false
             if (isProtectiveStopped() || isEmergencyStopped())
             {
