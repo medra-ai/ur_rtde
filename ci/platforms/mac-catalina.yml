@@ -1,11 +1,9 @@
-
 build-mac-catalina:
   extends: .mac-build
   tags:
     - Catalina
     - sdur
-    - mac 
-
+    - mac
 
 examples-mac-catalina:
   extends: .mac-build-examples
@@ -29,6 +27,3 @@ cibuildwheel-mac:
   dependencies:
     - build-mac-catalina
   needs: ["build-mac-catalina"]
-
-
-

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5...3.27)
 if (POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
@@ -27,7 +27,7 @@ unset(PROJECT_LANGUAGES)
 
 if(${CODE})
 	set(PROJECT_LANGUAGES ${PROJECT_LANGUAGES} C CXX)
-	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD 17)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 	set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -71,7 +71,7 @@ if(${CODE})
 		if(NOT PYBIND11_PYTHON_VERSION)
 			set(PYBIND11_PYTHON_VERSION "" CACHE STRING "Python version to use for compiling modules")
 		endif()
-		set(Python_ADDITIONAL_VERSIONS 3.10 3.9 3.8 3.7 3.6 3.5 3.4)
+		set(Python_ADDITIONAL_VERSIONS 3.11 3.10 3.9 3.8 3.7 3.6 3.5 3.4)
 		find_package(PythonLibsNew ${PYBIND11_PYTHON_VERSION} REQUIRED)
 
 		if(${CMAKE_VERSION} VERSION_LESS 3.11)
