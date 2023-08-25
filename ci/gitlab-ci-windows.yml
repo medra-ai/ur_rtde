@@ -1,4 +1,3 @@
-
 .CI-common-windows:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
@@ -27,7 +26,7 @@
   stage: build_examples
   script:
     - cd examples/cpp
-    - mkdir build 
+    - mkdir build
     - cd build
     - cmake -G "Visual Studio 16 2019" -A x64 ..
     - msbuild ur_rtde_examples.sln -m /property:Configuration=RelWithDebInfo
@@ -40,7 +39,7 @@
     CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
     CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair --add-path C:/Local/boost/lib -w {dest_dir} {wheel}"
   script:
-    -  python -m cibuildwheel --output-dir wheelhouse --platform windows
+    - python -m cibuildwheel --output-dir wheelhouse --platform windows
   artifacts:
     paths:
       - wheelhouse/

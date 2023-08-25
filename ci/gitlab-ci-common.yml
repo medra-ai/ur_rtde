@@ -1,4 +1,3 @@
-
 .CI-common:
   before_script:
     - THREADS=$(nproc --all)
