@@ -46,6 +46,7 @@ RTDEControlInterface::RTDEControlInterface(std::string hostname, double frequenc
       use_upper_range_registers_(flags & FLAG_UPPER_RANGE_REGISTERS),
       no_wait_(flags & FLAG_NO_WAIT),
       custom_script_(flags & FLAG_CUSTOM_SCRIPT),
+      disable_remote_control_check_(flags & FLAG_DISABLE_REMOTE_CONTROL_CHECK),
       ur_cap_port_(ur_cap_port),
       rt_priority_(rt_priority)
 {
@@ -85,7 +86,7 @@ RTDEControlInterface::RTDEControlInterface(std::string hostname, double frequenc
   }
 
   // Only check if in remote on real robot or when not using the ExternalControl UR Cap.
-  if (!use_external_control_ur_cap_)
+  if (!use_external_control_ur_cap_ && !disable_remote_control_check_)
   {
     // 192.168.56.101 is the CI ursim test ip address.
     if (hostname_ != "localhost" && hostname_ != "127.0.0.1" && hostname_ != "192.168.56.101")
