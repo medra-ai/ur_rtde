@@ -450,7 +450,7 @@ $5.4  end
         speed_pose = jog_speed_pose
         exit_critical
         speed_wrt_base = get_speed_wrt_base(speed_pose, frame_wrt_base)
-        speedl(speed_wrt_base, jog_acc)
+        speedl(speed_wrt_base, jog_acc, t=0.01)
       end
     end
 
@@ -1094,7 +1094,7 @@ $5.4          textmsg("cmd == 254 - contact detected done")
         ###################################
         # RTDE Control script - Main loop #
         ###################################
-        textmsg("RTDE Control Script Loaded (06.06.2023-13:52)")
+        textmsg("RTDE Control Script Loaded (14.02.2024-12:23)")
 
         # Initialize gain and damping for force mode to a more stable default
 $5.0    force_mode_set_gain_scaling(0.5)
