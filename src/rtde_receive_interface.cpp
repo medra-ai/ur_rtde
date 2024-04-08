@@ -170,7 +170,7 @@ bool RTDEReceiveInterface::setupRecipes(const double& frequency)
       variables_.emplace_back("ft_raw_wrench");
 
     if ((major_version == 3 && minor_version >= 11) ||
-        (major_version == 5 && minor_version >= 5 && bugfix_version >= 1))
+        (major_version == 5 && (minor_version > 5 || (minor_version == 5 && bugfix_version >= 1))))
     {
       variables_.emplace_back("payload");
       variables_.emplace_back("payload_cog");
