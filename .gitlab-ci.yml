@@ -31,8 +31,6 @@ wheels:
     GIT_SUBMODULE_STRATEGY: recursive
   only:
     - web
-    refs:
-      - tags
   dependencies:
     - cibuildwheel-linux
     - cibuildwheel-windows
