@@ -42,7 +42,7 @@
   extends: .CI-common-windows
   stage: build_wheels
   variables:
-    CIBW_SKIP: "cp311-* *-win32"
+    CIBW_SKIP: "cp36-* *-win32"
     CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
     CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair --add-path C:/Local/boost/lib -w {dest_dir} {wheel}"
   script:
