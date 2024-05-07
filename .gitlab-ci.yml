@@ -29,8 +29,8 @@ wheels:
   image: python:3.8
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-  only:
-    - web
+  when: 
+    manual
   dependencies:
     - cibuildwheel-linux
     - cibuildwheel-windows
