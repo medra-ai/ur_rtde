@@ -30,6 +30,10 @@ if(${CODE})
 	set(CMAKE_CXX_STANDARD 11)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 	set(CMAKE_CXX_EXTENSIONS OFF)
+	
+	if(NOT DEFINED USE_WERROR OR "${USE_WERROR}" STREQUAL "")
+		set(USE_WERROR OFF)
+	endif()
 
 	if(${USE_WERROR} AND NOT DEFINED MSVC)
 		set(WALL "-Wall -Wno-strict-aliasing -Wno-unused-function -Wno-pragmas")
