@@ -10,9 +10,8 @@ examples-windows10-vs16:
 
 cibuildwheel-windows:
   extends: .windows-cibuildwheel
-  only:
-    refs:
-      - tags
+  when:
+    manual
   tags:
     - sdur-windows
   dependencies:

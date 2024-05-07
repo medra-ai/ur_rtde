@@ -59,9 +59,8 @@ polyscope-3.7.2:
 
 cibuildwheel-linux:
   extends: .linux-cibuildwheel
-  only:
-    refs:
-      - tags
+  when:
+    manual
   tags:
     - sdur-dind
     - linux
