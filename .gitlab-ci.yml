@@ -30,6 +30,7 @@ wheels:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   only:
+    - web
     refs:
       - tags
   dependencies:
