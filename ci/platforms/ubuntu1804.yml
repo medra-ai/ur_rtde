@@ -1,4 +1,3 @@
-
 build-ubuntu-1804:
   extends: .linux-build
   image: registry.gitlab.sdu.dk/sdurobotics/docker-images/ur_rtde-build:ubuntu-1804

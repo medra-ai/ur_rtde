@@ -1,4 +1,3 @@
-
 build-windows10-vs16:
   extends: .windows-build
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5...3.27)
 if (POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
@@ -27,7 +27,7 @@ unset(PROJECT_LANGUAGES)
 
 if(${CODE})
 	set(PROJECT_LANGUAGES ${PROJECT_LANGUAGES} C CXX)
-	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD 17)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 	set(CMAKE_CXX_EXTENSIONS OFF)
 	

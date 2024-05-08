@@ -58,13 +58,10 @@ pages:
   script:
     - mv build/doc/html/_static/googled5bfdc1684e49924.html build/doc/html/googled5bfdc1684e49924.html
     - mv build/doc/html public
-    
+
   artifacts:
     paths:
       - public
   tags:
     - linux
     - sdur
-
-
-    

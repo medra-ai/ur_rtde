@@ -1,4 +1,3 @@
-
 .CI-common-linux:
   extends: .CI-common
   tags:
@@ -39,7 +38,7 @@
   stage: build_examples
   script:
     - cd examples/cpp
-    - mkdir build 
+    - mkdir build
     - cd build
     - cmake ..
     - make

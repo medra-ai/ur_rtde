@@ -56,6 +56,8 @@ if(PYTHONLIBS_FOUND AND PYTHON_MODULE_EXTENSION)
 endif()
 
 # Use the Python interpreter to find the libs.
+# Changed in version 3.27: This module is available only if policy CMP0148 is not set to NEW.
+cmake_policy(SET CMP0148 OLD)
 if(PythonLibsNew_FIND_REQUIRED)
     find_package(PythonInterp ${PythonLibsNew_FIND_VERSION} REQUIRED)
 else()
