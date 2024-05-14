@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(ur_rtde_examples)
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
 
 set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 message(STATUS "${DIR}")
