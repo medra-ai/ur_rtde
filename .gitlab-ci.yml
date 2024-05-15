@@ -27,21 +27,23 @@ include:
 wheels:
   stage: deploy
   image: python:3.8
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
   when: 
     manual
   dependencies:
     - cibuildwheel-linux
     - cibuildwheel-windows
     - cibuildwheel-mac
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    TWINE_USERNAME: $PYPI_USERNAME
+    TWINE_PASSWORD: $PYPI_PASSWORD
   script:
     - ls wheelhouse || echo "wheelhouse does not exist"
     - python -m pip install pip -U
     - python -m pip install setuptools -U
     - python -m pip install twine wheel
     - python setup.py sdist -d wheelhouse/
-    - twine upload --skip-existing -u "${K8S_SECRET_TWINE_USERNAME}" -p "${K8S_SECRET_TWINE_PASSWORD}" wheelhouse/*
+    - twine upload --skip-existing wheelhouse/*
   tags:
     - linux
     - sdur
