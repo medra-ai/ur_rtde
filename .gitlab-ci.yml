@@ -38,6 +38,7 @@ wheels:
   script:
     - ls wheelhouse || echo "wheelhouse does not exist"
     - python -m pip install pip -U
+    - python -m pip install setuptools -U
     - python -m pip install twine wheel
     - python setup.py sdist -d wheelhouse/
     - twine upload --skip-existing -u "${K8S_SECRET_TWINE_USERNAME}" -p "${K8S_SECRET_TWINE_PASSWORD}" wheelhouse/*
