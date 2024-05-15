@@ -31,8 +31,7 @@ wheels:
     manual
   dependencies:
     - cibuildwheel-linux
-    - cibuildwheel-windows
-    - cibuildwheel-mac
+
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
     TWINE_USERNAME: $PYPI_USERNAME
