@@ -39,9 +39,10 @@ wheels:
   script:
     - ls wheelhouse || echo "wheelhouse does not exist"
     - python -m pip install pip -U
+    - python -m pip install build -U
     - python -m pip install setuptools -U
     - python -m pip install twine wheel
-    - python setup.py sdist -d wheelhouse/
+    - python -m build -o wheelhouse/
     - twine upload --skip-existing wheelhouse/*
   tags:
     - linux
