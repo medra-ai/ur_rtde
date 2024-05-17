@@ -45,7 +45,7 @@ wheels:
     - python -m pip install setuptools -U
     - python -m pip install twine wheel
     - python -m build --sdist -o wheelhouse/
-    - twine upload wheelhouse/*
+    - twine upload --skip-existing wheelhouse/*
   tags:
     - linux
     - sdur
