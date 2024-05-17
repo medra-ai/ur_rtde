@@ -93,7 +93,7 @@
     CIBW_SKIP: "*-musllinux*"
   script:
     - curl -sSL https://get.docker.com/ | sh
-    - python -m pip install cibuildwheel==2.11.2
+    - python -m pip install cibuildwheel==2.18.0
     - cibuildwheel --output-dir wheelhouse
   artifacts:
     paths:
