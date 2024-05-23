@@ -54,12 +54,13 @@ If you only want to the use the Python interface, you can install ur_rtde throug
 #### Prebuilt python wheels support matrix: ####
 |   | macOS Intel | macOS Apple Silicon | Windows 64bit | Windows 32bit | Windows Arm64 | manylinux x86_64 | manylinux i686 | manylinux aarch64 | manylinux ppc64le | manylinux s390x |
 |---------------|----|-----|-----|---|-----|---|---|---|-----|-----|
-| CPython 3.6   | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | ✅  | ✅  |
-| CPython 3.7   | ✅ | :x: | ✅  | :x: | :x:| ✅ | ✅ | ✅ | ✅  | ✅  |
+| CPython 3.6   | ✅ | :x: | :x: | :x: | :x: | ✅ | ✅ | ✅ | ✅  | ✅  |
+| CPython 3.7   | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | ✅  | ✅  |
 | CPython 3.8   | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | ✅  | ✅  |
 | CPython 3.9   | ✅ | :x: | ✅  | :x: | ✅¹ | ✅ | ✅ | ✅ | ✅  | ✅  |
 | CPython 3.10  | ✅ | :x: | ✅  | :x: | ✅¹ | ✅ | ✅ | ✅ | ✅  | ✅  |
-| CPython 3.11  | ✅ | :x: | :x:  | :x: | ✅¹ | ✅ | ✅ | ✅ | ✅  | ✅  |
+| CPython 3.11  | ✅ | :x: | ✅  | :x: | ✅¹ | ✅ | ✅ | ✅ | ✅  | ✅  |
+| CPython 3.12  | ✅ | :x: | ✅  | :x: | ✅¹ | ✅ | ✅ | ✅ | ✅  | ✅  |
 | PyPy 3.7 v7.3 | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | :x: | :x: |
 | PyPy 3.8 v7.3 | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | :x: | :x: |
 | PyPy 3.9 v7.3 | ✅ | :x: | ✅  | :x: | :x: | ✅ | ✅ | ✅ | :x: | :x: |
